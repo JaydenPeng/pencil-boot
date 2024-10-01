@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  org.pencil.kafka.listener.KafkaProducerMetricsListener\
+  org.pencil.kafka.config.SingleKafkaConfig
