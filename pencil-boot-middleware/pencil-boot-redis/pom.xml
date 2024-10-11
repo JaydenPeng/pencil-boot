@@ -18,6 +18,17 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.pencil.boot</groupId>
+            <artifactId>pencil-boot-common</artifactId>
+        </dependency>
+    </dependencies>
+
     <build>
         <resources>
             <resource>
