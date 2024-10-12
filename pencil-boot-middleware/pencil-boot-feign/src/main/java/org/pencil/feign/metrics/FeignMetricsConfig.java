@@ -4,13 +4,11 @@ import io.prometheus.client.CollectorRegistry;
 import io.prometheus.client.Counter;
 import io.prometheus.client.Histogram;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * @author pencil
  * @date 24/10/12 10:49
  */
-@Configuration
 public class FeignMetricsConfig {
 
     @Bean
