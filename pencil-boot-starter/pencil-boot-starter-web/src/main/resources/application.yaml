@@ -1,0 +1,17 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    logfile:
+      external-file: logs/${spring.application.name}.log
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+logging:
+  file:
+    path: logs
+    name: ${spring.application.name}
