@@ -27,4 +27,8 @@ public class PencilException extends RuntimeException {
         return new PencilException(-500, message);
     }
 
+    public static PencilException of(ErrorCode code) {
+        return new PencilException(code.getCode(), code.getMessage());
+    }
+
 }

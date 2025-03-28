@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public class GlobalContext {
 
-    private static final TransmittableThreadLocal<Map<String, Object>> CONTEXT_HOLDER = new TransmittableThreadLocal<>();
+    private static final TransmittableThreadLocal<Map<String, Object>> CONTEXT_HOLDER = TransmittableThreadLocal.withInitial(HashMap::new);
 
     public static Map<String, Object> get() {
         Map<String, Object> map = CONTEXT_HOLDER.get();
@@ -32,7 +32,10 @@ public class GlobalContext {
     }
 
     public static void clearAll() {
-        CONTEXT_HOLDER.remove();
+        if (CONTEXT_HOLDER.get() != null) {
+            CONTEXT_HOLDER.remove();
+            MDC.clear(); // 清理 MDC 中的内容
+        }
     }
 
     public static void clear(String key) {
@@ -41,11 +44,16 @@ public class GlobalContext {
 
     // 生成traceid
     public static void generateTraceId(String traceId) {
+        if (traceId == null || traceId.isEmpty()) {
+            throw new IllegalArgumentException("traceId cannot be null or empty");
+        }
         put("traceId", traceId);
         MDC.put("traceId", traceId);
     }
 
+
     // 私有构造
-    private GlobalContext() {}
+    private GlobalContext() {
+    }
 
 }
