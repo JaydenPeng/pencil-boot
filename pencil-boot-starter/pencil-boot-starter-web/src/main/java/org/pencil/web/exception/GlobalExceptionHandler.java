@@ -2,7 +2,8 @@ package org.pencil.web.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.pencil.common.beans.resp.Result;
-import org.pencil.common.exception.PencilException;
+import org.pencil.common.exception.RequestException;
+import org.pencil.common.exception.ServerException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,10 +31,16 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(Result.of(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(PencilException.class)
-    public ResponseEntity<Result<Void>> handlePencilException(PencilException e) {
-        log.error("global catch pencil exception", e);
+    @ExceptionHandler(ServerException.class)
+    public ResponseEntity<Result<Void>> handleServerException(ServerException e) {
+        log.error("global catch server exception", e);
         return new ResponseEntity<>(Result.of(e.getCode(), e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(RequestException.class)
+    public ResponseEntity<Result<Void>> handleRequestException(RequestException e) {
+        log.error("global catch request exception", e);
+        return new ResponseEntity<>(Result.of(e.getCode(), e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
