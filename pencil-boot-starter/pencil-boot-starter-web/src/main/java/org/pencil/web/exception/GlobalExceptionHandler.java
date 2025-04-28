@@ -43,6 +43,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(Result.of(e.getCode(), e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
+ 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Result<Void>> handleParamValidException(MethodArgumentNotValidException e) {
         log.error("global catch param valid exception", e);
