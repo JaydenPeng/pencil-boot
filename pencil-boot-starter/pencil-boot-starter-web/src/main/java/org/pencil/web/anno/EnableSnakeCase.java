@@ -1,6 +1,6 @@
 package org.pencil.web.anno;
 
-import org.pencil.web.config.SnakeCaseConfig;
+import org.pencil.web.config.CustomMessageConverterConfig;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.ElementType;
@@ -14,6 +14,6 @@ import java.lang.annotation.Target;
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Import(SnakeCaseConfig.class)
+@Import(CustomMessageConverterConfig.class)
 public @interface EnableSnakeCase {
 }
