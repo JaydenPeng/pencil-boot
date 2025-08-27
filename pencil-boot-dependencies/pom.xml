@@ -121,6 +121,12 @@
                 <version>${ttl.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.apache.skywalking</groupId>
+                <artifactId>apm-toolkit-logback-1.x</artifactId>
+                <version>8.12.0</version> <!-- 建议使用与你Agent相同的版本 -->
+            </dependency>
+
             <!--<<pencil-spring>>-->
             <dependency>
                 <groupId>org.pencil.boot</groupId>

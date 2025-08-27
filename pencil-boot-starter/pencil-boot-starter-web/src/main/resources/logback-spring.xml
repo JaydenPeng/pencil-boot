@@ -1,24 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <!-- 直接本配置文件配置，name的值是变量的名称，value的值时变量定义的值。通过定义的值会被插入到logger上下文中。定义后，可以使“${}”来使用变量。java.io.tmpdir的值从虚拟机参数中获取：-Djava.io.tmpdir -->
+    <!-- 添加 SkyWalking TraceID 工具包 -->
+    <conversionRule conversionWord="tid" converterClass="org.apache.skywalking.apm.toolkit.log.logback.v1.x.TraceIdPatternConverter" />
+
+    <!-- 直接本配置文件配置，name的值是变量的名称，value的值时变量定义的值。通过定义的值会被插入到logger上下文中。定义后，可以使"${}"来使用变量。java.io.tmpdir的值从虚拟机参数中获取：-Djava.io.tmpdir -->
     <property name="LOG_PATH"
               value="${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}}"/>
-    
+
     <!-- properties配置文件定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径。source配置文件内参数key -->
     <springProperty scope="context" name="APP_NAME"
                     source="spring.application.name" defaultValue="pencil-boot"/>
 
-    <!-- %d{yyyy-MM-dd HH:mm:ss.SSS}——日志输出时间; $PID——进程号; %level——日志级别; ${LOG_LEVEL_PATTERN:-%5p}：用于呈现日志级别的格式（默认%5p）；%t--输出日志的线程名；%-40.40logger{39}——其中的“-”表示左对齐，“{39}”表示logger名字最长39个字符，否则按照句点分割; %msg——日志消息; %n——平台的换行符; -->
+    <!-- 修改日志模式，添加 %tid 占位符用于输出 SkyWalking TraceID -->
+    <!-- 这里添加后需要启动时候添加skywalking javaagent， -javaagent:${skywalking-agent-path}/skywalking-agent.jar -->
     <property name="LOG_PATTERN"
-              value="[%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}}] %X{trace_id:-}%X{IP}%X{userid}[${PID:- }] [%level] [%thread]%t %-40.40logger{39}: %msg%n"/>
- 
+              value="[%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}}] [%tid] %X{trace_id:-}%X{IP}%X{userid}[${PID:- }] [%level] [%thread]%t %-40.40logger{39}: %msg%n"/>
+
     <!-- 标准输出模式 console-->
     <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
         <!-- 对日志进行格式化 -->
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>${LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
         </encoder>
     </appender>
- 
+
     <!-- 输出模式 file,滚动记录文件，先将日志文件指定到文件，当符合某个条件时，将日志记录到其他文件 -->
     <appender name="fileInfo" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!--被写入的文件名，可以是相对目录，也可以是绝对目录，如果上级目录不存在会自动创建，没有默认值。-->
@@ -35,11 +41,12 @@
             <totalSizeCap>20GB</totalSizeCap>
         </rollingPolicy>
         <!--  layout 负责把事件转换成字符串，格式化的日志信息的输出 -->
-        <layout class="ch.qos.logback.classic.PatternLayout">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>${LOG_PATTERN}</pattern>
-        </layout>
+            <charset>UTF-8</charset>
+        </encoder>
     </appender>
- 
+
     <appender name="fileError" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_PATH}/${APP_NAME}-error.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
@@ -50,16 +57,17 @@
             <maxFileSize>1GB</maxFileSize>
             <totalSizeCap>20GB</totalSizeCap>
         </rollingPolicy>
-        <layout class="ch.qos.logback.classic.PatternLayout">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>${LOG_PATTERN}</pattern>
-        </layout>
+            <charset>UTF-8</charset>
+        </encoder>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>ERROR</level>
             <onMatch>ACCEPT</onMatch>
             <onMismatch>DENY</onMismatch>
         </filter>
     </appender>
- 
+
     <appender name="fileSQL" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_PATH}/${APP_NAME}-sql.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
@@ -69,9 +77,10 @@
             <maxFileSize>1GB</maxFileSize>
             <totalSizeCap>20GB</totalSizeCap>
         </rollingPolicy>
-        <layout class="ch.qos.logback.classic.PatternLayout">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>${LOG_PATTERN}</pattern>
-        </layout>
+            <charset>UTF-8</charset>
+        </encoder>
     </appender>
 
     <!--
@@ -81,14 +90,22 @@
             addtivity:是否向上级logger传递打印信息。默认是true。
     -->
     <logger name="springfox.documentation" level="OFF"/>
- 
+
     <!-- springProfile多环境日志输出，根据不同环境（local:本地环境，prod:生产环境，test:测试环境，dev:开发环境）来定义不同的日志输出，读取spring.profiles.active的值-->
     <springProfile name="local">
-        <root>
-            <level value="INFO"/>
+        <root level="INFO">
             <appender-ref ref="stdout"/>
             <appender-ref ref="fileInfo"/>
             <appender-ref ref="fileError"/>
+        </root>
+    </springProfile>
+
+    <!-- 其他环境配置 -->
+    <springProfile name="dev,test,prod">
+        <root level="INFO">
+            <appender-ref ref="fileInfo"/>
+            <appender-ref ref="fileError"/>
+            <appender-ref ref="fileSQL"/>
         </root>
     </springProfile>
 
