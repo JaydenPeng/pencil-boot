@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.pencil.boot</groupId>
+        <artifactId>pencil-boot</artifactId>
+        <version>${revision}</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>pencil-boot-dependencies</artifactId>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <spring.boot.version>2.7.14</spring.boot.version>
+        <spring.alibaba.version>2021.0.5.0</spring.alibaba.version>
+        <spring.cloud.version>2021.0.6</spring.cloud.version>
+        <hutool-all.version>5.8.27</hutool-all.version>
+        <bootstrap.version>4.0.4</bootstrap.version>
+        <openfeign.version>3.1.3</openfeign.version>
+        <kafka.version>3.1.0</kafka.version>
+        <knife4j.version>4.4.0</knife4j.version>
+        <mybatis-plus.version>3.5.7</mybatis-plus.version>
+        <dynamic-datasource.version>4.3.0</dynamic-datasource.version>
+        <mybatis-mate.version>1.3.2-sp2</mybatis-mate.version>
+        <ahocorasick.version>0.6.3</ahocorasick.version>
+        <ttl.version>2.14.5</ttl.version>
+        <druid.version>1.2.23</druid.version>
+        <spring.admin.version>2.7.15</spring.admin.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <!--<<spring boot>>-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring.boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!--<<spring cloud alibaba>>-->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring.alibaba.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring.cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!--<<工具类>>-->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool-all.version}</version>
+            </dependency>
+
+            <!--knife4j文档组件-->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-openapi3-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
+            </dependency>
+
+            <!--<<数据库组件>>-->
+            <!--mybatis-plus-->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+            <!--动态数据源-->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+                <version>${dynamic-datasource.version}</version>
+            </dependency>
+            <!--mybatis增强功能组件-->
+            <!-- spring boot 2.X 请用 1.3.2-sp2 版本 -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>${druid.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-mate-starter</artifactId>
+                <version>${mybatis-mate.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>de.codecentric</groupId>
+                <artifactId>spring-boot-admin-starter-client</artifactId>
+                <version>${spring.admin.version}</version>
+            </dependency>
+            <!--敏感词-->
+            <dependency>
+                <groupId>org.ahocorasick</groupId>
+                <artifactId>ahocorasick</artifactId>
+                <version>${ahocorasick.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>transmittable-thread-local</artifactId>
+                <version>${ttl.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.skywalking</groupId>
+                <artifactId>apm-toolkit-logback-1.x</artifactId>
+                <version>8.12.0</version> <!-- 建议使用与你Agent相同的版本 -->
+            </dependency>
+
+            <!--<<pencil-spring>>-->
+            <dependency>
+                <groupId>org.pencil.boot</groupId>
+                <artifactId>pencil-boot-common</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.pencil</groupId>
+                <artifactId>pencil-boot-feign</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+</project>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="pencil-boot-common" />
+        <module name="pencil-boot-mongo" />
+        <module name="pencil-boot-feign" />
+        <module name="pencil-boot-starter-web" />
+        <module name="pencil-boot-mysql" />
+        <module name="pencil-boot-job" />
+        <module name="pencil-boot-redis" />
+        <module name="pencil-boot-test" />
+        <module name="pencil-boot-kafka" />
+        <module name="pencil-boot-dependencies" />
+        <module name="pencil-boot-caffeine" />
+      </profile>
+    </annotationProcessing>
+  </component>
+</project>
